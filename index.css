@@ -1,0 +1,251 @@
+.DOM {
+    width: 100%;
+    min-height: 100vh;
+    padding: 0 1rem;
+    background: url("https://images8.alphacoders.com/123/1237876.jpg") no-repeat center center;
+    background-size: cover;
+    overflow-y: auto; /* <--- PERMITE SCROLL VERTICAL CUANDO SEA NECESARIO */
+    box-sizing: border-box;
+}
+
+.pantalla-inicio {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Degradado suave de fondo */
+    background: url("https://es.gamewallpapers.com/download.php?img=wallpaper_poppy_playtime_01_1920x1080.jpg") no-repeat center center;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    text-align: center;
+    gap: 1.5rem;
+    padding: 2rem;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.pantalla-inicio h1 {
+    font-size: 4.5rem;
+    margin-bottom: 0;
+    font-family: "Butcherman", system-ui;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+
+.pantalla-inicio p {
+    font-size: 1.8rem;
+    font-weight: 500;
+    max-width: 320px;
+    font-family: "Butcherman", system-ui;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+#btn-iniciar {
+    font-size: 2rem;
+    padding: 1rem 3rem;
+    background-color: black;
+    color: white;
+    border: 2px solid #ccc;
+    border-radius: 0;
+    cursor: pointer;
+    
+    letter-spacing: 3px;
+    text-align: center;
+    text-transform: uppercase;
+    box-shadow: none;
+    opacity: 50%;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#btn-iniciar:hover {
+    opacity: 90%;
+}
+
+
+
+.header {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    padding: 10px 20px;
+    z-index: 1000;
+    align-items: center;
+
+    display: grid;
+    grid-template-columns: 30rem 80rem 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+
+    background: rgba(0, 0, 0, 0.3); /* más elegante y oscuro */
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* sombra suave y profunda */
+    border-radius: 0 0 25px 25px;
+    animation: fadeSlide 0.6s ease-out;
+}
+
+/* Animación de aparición */
+@keyframes fadeSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+.header .logo {
+    width: 15rem;
+    object-fit: cover;
+}
+
+.titulo-header {
+    font-size: 1.8rem;
+    padding: 1rem 3rem;
+    background-color: black;
+    color: white;
+    border: 2px solid #ccc;
+    border-radius: 0;
+    letter-spacing: 3px;
+    text-align: center;
+    text-transform: uppercase;
+    box-shadow: none;
+    opacity: 50%;
+    transition: background-color 0.3s, transform 0.2s;
+
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    justify-self: center; /* Para centrar en grid */
+    align-self: center;
+    margin: 0 auto;
+}
+
+.titulo-header:hover {
+    opacity: 90%;
+}
+
+
+.header .vida {
+    width: 4rem;
+    object-fit: cover;
+}
+
+.tablero {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    gap: 2rem;
+    margin-top: 5rem;
+    min-height: 60vh;
+    grid-auto-flow: row; /* Asegura que se formen filas automáticamente */
+    margin-bottom: 5rem;
+}
+
+
+.carta {
+    width: 15rem;
+    height: 15rem;
+    perspective: 1000px;
+    margin: auto;
+    position: relative;
+}
+
+.carta .front,
+.carta .back {
+    width: 100%;
+    height: 100%;
+    border-radius: 10%;
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 0.6s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carta .front {
+    background-color: green;
+    transform: rotateY(0deg);
+    z-index: 2;
+}
+
+.carta .back {
+    background-color: white;
+    transform: rotateY(180deg);
+    font-size: 6rem; /* Aquí haces el emoji más grande */
+}
+
+
+.carta.volteada .front {
+    transform: rotateY(180deg);
+}
+
+.carta.volteada .back {
+    transform: rotateY(360deg);
+}
+
+.boton-nivel {
+    display: block;
+    font-size: 2rem;
+    padding: 1rem 3rem;
+    background-color: black;
+    margin: 3rem auto;
+    color: white;
+    border: 2px solid #ccc;
+    border-radius: 0;
+    cursor: pointer;
+    letter-spacing: 3px;
+    text-align: center;
+    text-transform: uppercase;
+    box-shadow: none;
+    opacity: 50%;
+    transition: background-color 0.3s, transform 0.2s;
+
+    
+}
+
+.boton-nivel:hover {
+    opacity: 90%;
+}
+
+.cartel-final {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* oscuro semitransparente */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 3rem;
+    z-index: 1000;
+    text-align: center;
+    padding: 2rem;
+}
+
+.cartel-final p {
+    font-size: 2rem;
+    margin-top: 1rem;
+}
+
+.cronometro {
+    font-size: 2rem;
+    font-weight: bold;
+    align-self: center;
+    justify-self: center;
+    color: red;
+
+    grid-row: 1/2;
+    grid-column: 2/3;
+}
