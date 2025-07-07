@@ -118,7 +118,14 @@ function crearCarta(valor) {
 
     let back = document.createElement('div');
     back.className = "back";
-    back.textContent = valor; // Emoji aquí
+
+    let img = document.createElement('img');
+    img.src = `./img/${valor}`;
+    img.alt = "carta";
+    img.className = "imagen-carta";
+
+back.appendChild(img);
+
 
     carta.appendChild(front);
     carta.appendChild(back);
@@ -137,7 +144,7 @@ function mezclarArray(array) {
 
 
 function generarNivel(nivel, tablero, header, botonNivel) {
-    if (nivel > 9) return;
+    if (nivel > 5) return;
 
     tablero.innerHTML = "";
 
@@ -145,18 +152,16 @@ function generarNivel(nivel, tablero, header, botonNivel) {
 
     let tiempo = 8 + nivel * 2 + Math.floor(cantidadCartas / 2);
     iniciarCronometro(tiempo, () => {
-        alert("⏰ ¡Se acabó el tiempo!");
 
         vidasRestantes--;  // Restar una vida
-
-        // Opcional: reiniciar el nivel o volver al nivel 1
         actualizarVidas(header);
 
         if (vidasRestantes > 0) {
-            generarNivel(nivel, tablero, header, botonNivel);  // Reinicia mismo nivel
+            mostrarCartelVidaPerdida(() => {
+                generarNivel(nivel, tablero, header, botonNivel);  // Reinicia mismo nivel
+            });
         } else {
-            alert("💔 ¡Game Over!");
-            location.reload(); // recarga la página para reiniciar el juego
+            mostrarCartelGameOver();
         }
     });
 
@@ -165,10 +170,18 @@ function generarNivel(nivel, tablero, header, botonNivel) {
     tablero.style.gridTemplateColumns = `repeat(${columnas}, auto)`;
 
     // Array de emojis para los pares (puedes poner imágenes o lo que prefieras)
-    const emojis = ["🐱", "🐶", "🐰", "🦊", "🐻", "🐼", "🐨", "🐯", "🦁", "🐮"];
+    const imagenes = [
+        "amarillo.png",
+        "azul.png",
+        "flor.png",
+        "protaAzul.png",
+        "rosa.png",
+        "verde.png"
+    ];
+    
 
     // Tomamos la cantidad necesaria de pares (cantidadCartas / 2)
-    let valores = emojis.slice(0, cantidadCartas / 2);
+    let valores = imagenes.slice(0, cantidadCartas / 2);
 
     // Creamos un array con dos de cada valor
     let cartasValores = valores.concat(valores);
@@ -210,7 +223,7 @@ function generarNivel(nivel, tablero, header, botonNivel) {
                     if (paresEncontrados === cantidadCartas / 2) {
                         const boton = document.querySelector('.boton-nivel');
                         clearInterval(temporizador); // Detener el cronómetro al ganar
-                        if (nivel < 9) {
+                        if (nivel < 5) {
                             // ACTIVAR BOTÓN SOLO CUANDO TERMINE EL NIVEL
                             botonNivel.disabled = false;
                             botonNivel.style.opacity = "1";
@@ -285,6 +298,47 @@ function mostrarCartelFinal() {
 
     document.body.appendChild(cartel);
 }
+
+
+function mostrarCartelVidaPerdida(callback) {
+    const cartel = document.createElement('div');
+    cartel.className = "cartel-vida-perdida";
+    cartel.innerHTML = `
+        <h2>💔 ¡Perdiste una vida!</h2>
+        <p>¡Inténtalo de nuevo!</p>
+        <button id="btn-reintentar">Reintentar nivel</button>
+    `;
+
+    document.body.appendChild(cartel);
+
+    document.querySelector('#btn-reintentar').onclick = () => {
+        cartel.remove();
+        callback(); // Esto vuelve a iniciar el nivel
+    };
+}
+
+
+function mostrarCartelGameOver() {
+    const cartel = document.createElement('div');
+    cartel.className = "cartel-gameover";
+
+    cartel.innerHTML = `
+        <h1>💔 ¡Game Over!</h1>
+        <p>Se te acabaron las vidas, pero puedes volver a intentarlo.</p>
+        <button id="btn-reiniciar">Reiniciar Juego</button>
+    `;
+
+    document.body.appendChild(cartel);
+
+    document.querySelector('#btn-reiniciar').onclick = () => {
+        cartel.remove();
+        vidasRestantes = 5;
+        const DOM = document.querySelector('#root');
+        DOM.innerHTML = "";
+        cargarDOM();
+    };
+}
+
 
 
 

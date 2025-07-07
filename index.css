@@ -26,13 +26,17 @@
     gap: 1.5rem;
     padding: 2rem;
     color: white;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Bungee", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .pantalla-inicio h1 {
     font-size: 4.5rem;
     margin-bottom: 0;
-    font-family: "Butcherman", system-ui;
+    font-family: "Bungee", sans-serif;
+    font-weight: 400;
+    font-style: normal;
     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
 }
 
@@ -41,7 +45,9 @@
     font-size: 1.8rem;
     font-weight: 500;
     max-width: 320px;
-    font-family: "Butcherman", system-ui;
+    font-family: "Bungee", sans-serif;
+    font-weight: 400;
+    font-style: normal;
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
 }
 
@@ -59,7 +65,7 @@
     text-transform: uppercase;
     box-shadow: none;
     opacity: 50%;
-    transition: background-color 0.3s, transform 0.2s;
+    transition: background-color 0.3s, transform 0.2s;background-color: black;
 }
 
 #btn-iniciar:hover {
@@ -74,16 +80,15 @@
     width: 100%;
     padding: 10px 20px;
     z-index: 1000;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-
-    display: grid;
-    grid-template-columns: 30rem 80rem 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr;
-
-    background: rgba(0, 0, 0, 0.3); /* más elegante y oscuro */
+    flex-wrap: wrap;
+    gap: 1rem;
+    background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* sombra suave y profunda */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     border-radius: 0 0 25px 25px;
     animation: fadeSlide 0.6s ease-out;
 }
@@ -103,12 +108,14 @@
 
 .header .logo {
     width: 15rem;
-    object-fit: cover;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
 }
 
 .titulo-header {
-    font-size: 1.8rem;
-    padding: 1rem 3rem;
+    font-size: clamp(1.2rem, 2vw, 1.8rem);
+    padding: 0.8rem 2rem;
     background-color: black;
     color: white;
     border: 2px solid #ccc;
@@ -116,14 +123,10 @@
     letter-spacing: 3px;
     text-align: center;
     text-transform: uppercase;
-    box-shadow: none;
     opacity: 50%;
-    transition: background-color 0.3s, transform 0.2s;
-
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    justify-self: center; /* Para centrar en grid */
-    align-self: center;
-    margin: 0 auto;
+    transition: opacity 0.3s;
+    font-family: "Bungee", sans-serif;
+    margin: 0;
 }
 
 .titulo-header:hover {
@@ -135,6 +138,14 @@
     width: 4rem;
     object-fit: cover;
 }
+
+.cronometro {
+    font-size: clamp(1.5rem, 2vw, 2rem);
+    font-weight: bold;
+    color: red;
+    margin: 0;
+}
+
 
 .tablero {
     display: grid;
@@ -156,6 +167,7 @@
     position: relative;
 }
 
+
 .carta .front,
 .carta .back {
     width: 100%;
@@ -172,10 +184,50 @@
 }
 
 .carta .front {
-    background-color: green;
+    background: linear-gradient(135deg, #436d92, #b7a364); /* azul tenebroso + amarillo sucio */
+    border: 3px solid #2e2e2e;
+    border-radius: 20px;
+    box-shadow: 0 6px 12px rgba(46, 46, 46, 0.5), inset 0 0 12px rgba(92, 82, 64, 0.4);
     transform: rotateY(0deg);
     z-index: 2;
-}
+    transition: transform 0.4s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2e2e2e;
+    font-weight: 700;
+    font-family: 'Creepster', cursive;
+    font-size: 1.4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Efecto de luz tipo linterna que se mueve */
+  .carta .front::before {
+    content: '';
+    position: absolute;
+    top: -60%;
+    left: -60%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.1), transparent 70%);
+    transform: rotate(25deg);
+    animation: glowMove 4s infinite linear;
+    pointer-events: none;
+  }
+  
+  @keyframes glowMove {
+    0%   { transform: translateX(-100%) rotate(25deg); }
+    100% { transform: translateX(100%) rotate(25deg); }
+  }
+  
+  .carta .front:hover {
+    box-shadow: 0 12px 24px rgba(46, 46, 46, 0.7);
+    transform: rotateY(0deg) scale(1.06);
+  }
+    
+  
 
 .carta .back {
     background-color: white;
@@ -191,6 +243,14 @@
 .carta.volteada .back {
     transform: rotateY(360deg);
 }
+
+.imagen-carta {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
 
 .boton-nivel {
     display: block;
@@ -239,13 +299,222 @@
     margin-top: 1rem;
 }
 
-.cronometro {
-    font-size: 2rem;
-    font-weight: bold;
-    align-self: center;
-    justify-self: center;
-    color: red;
-
-    grid-row: 1/2;
-    grid-column: 2/3;
+.cartel-vida-perdida {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(20, 0, 0, 0.85);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: "Bungee", sans-serif;
+    text-align: center;
+    z-index: 9999;
+    animation: aparecer 0.5s ease-out;
 }
+
+.cartel-vida-perdida h2 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #ff4d4d;
+}
+
+.cartel-vida-perdida p {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+#btn-reintentar {
+    padding: 0.8rem 2rem;
+    font-size: 1.2rem;
+    font-family: "Bungee", sans-serif;
+    background-color: #ff4d4d;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    color: white;
+    transition: background 0.3s;
+}
+
+#btn-reintentar:hover {
+    background-color: #ff1a1a;
+}
+
+@keyframes aparecer {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.cartel-gameover {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 15, 15, 0.85);
+    color: white;
+    font-family: "Bungee", sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    text-align: center;
+    padding: 2rem;
+    gap: 1.5rem;
+    animation: aparecer 0.5s ease-out;
+}
+
+.cartel-gameover h1 {
+    font-size: 4rem;
+    margin: 0;
+    color: #ff4d4d;
+}
+
+.cartel-gameover p {
+    font-size: 1.5rem;
+    max-width: 600px;
+}
+
+.cartel-gameover button {
+    background-color: #ff4d4d;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1.2rem;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: "Bungee", sans-serif;
+    transition: background-color 0.3s ease;
+}
+
+.cartel-gameover button:hover {
+    background-color: #ff1a1a;
+}
+
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+/*ADAPTACIONES*/
+
+/* ----------------- RESPONSIVE DESIGN ----------------- */
+
+/* Tablets (modo vertical y horizontal) */
+@media screen and (max-width: 1024px) {
+    .header {
+        padding: 10px 15px;
+    }
+    
+    .header .logo {
+        width: 12rem;
+    }
+    
+    .titulo-header {
+        padding: 0.6rem 1.5rem;
+    }
+  
+    .pantalla-inicio h1 {
+      font-size: 3rem;
+    }
+  
+    .pantalla-inicio p {
+      font-size: 1.4rem;
+    }
+  
+    #btn-iniciar {
+      font-size: 1.5rem;
+      padding: 0.8rem 2rem;
+    }
+  
+    .carta {
+      width: 12rem;
+      height: 12rem;
+    }
+  
+    .boton-nivel {
+      font-size: 1.6rem;
+      padding: 0.8rem 2rem;
+    }
+  
+    .cronometro {
+      font-size: 1.5rem;
+    }
+  }
+  
+  /* Celulares (pantallas pequeñas) */
+  @media screen and (max-width: 768px) {
+    .header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem;
+    }
+  
+    .titulo-header {
+      font-size: 1.2rem;
+      padding: 0.6rem 1.5rem;
+    }
+  
+    .pantalla-inicio h1 {
+      font-size: 2.4rem;
+    }
+  
+    .pantalla-inicio p {
+      font-size: 1.2rem;
+    }
+  
+    #btn-iniciar {
+      font-size: 1.2rem;
+      padding: 0.6rem 1.5rem;
+    }
+  
+    .tablero {
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 1rem;
+    }
+  
+    .carta {
+      width: 10rem;
+      height: 10rem;
+    }
+  
+    .boton-nivel {
+      font-size: 1.4rem;
+      padding: 0.6rem 1.5rem;
+    }
+  
+    .cartel-final,
+    .cartel-vida-perdida,
+    .cartel-gameover {
+      font-size: 1.5rem;
+      padding: 1rem;
+    }
+  
+    .cartel-final p,
+    .cartel-vida-perdida p {
+      font-size: 1rem;
+    }
+  
+    #btn-reintentar {
+      font-size: 1rem;
+      padding: 0.6rem 1.2rem;
+    }
+  
+    .cronometro {
+      font-size: 1.2rem;
+    }
+  }
+  
