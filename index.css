@@ -31,6 +31,7 @@
     font-style: normal;
 }
 
+
 .pantalla-inicio h1 {
     font-size: 4.5rem;
     margin-bottom: 0;
@@ -139,11 +140,45 @@
     object-fit: cover;
 }
 
+
+
 .cronometro {
-    font-size: clamp(1.5rem, 2vw, 2rem);
-    font-weight: bold;
-    color: red;
-    margin: 0;
+  font-size: clamp(1.5rem, 2vw, 1.8rem);
+  padding: 0.8rem 2rem;
+  background-color: black;
+  color: #ff4d4d;
+  border: 2px solid #ff4d4d;
+  border-radius: 0;
+  letter-spacing: 3px;
+  text-align: center;
+  text-transform: uppercase;
+  opacity: 50%;
+  transition: opacity 0.3s;
+  font-family: "Bungee", sans-serif;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cronometro:hover {
+  opacity: 90%;
+}
+
+.cronometro::before {
+  content: '⏱️';
+  font-size: 1.2em;
+}
+
+/* Estilo para tiempo crítico (opcional) */
+.cronometro.critico {
+  color: #ff4d4d;
+  animation: pulse 0.5s infinite alternate;
+}
+
+@keyframes pulse {
+  from { opacity: 0.5; }
+  to { opacity: 0.9; }
 }
 
 
@@ -406,6 +441,171 @@
         transform: scale(1);
     }
 }
+
+.puntos {
+  background: rgba(255, 215, 0, 0.15); /* Fondo dorado semitransparente */
+  border: 2px solid rgba(255, 215, 0, 0.5); /* Borde dorado */
+  border-radius: 50px; /* Bordes más redondeados */
+  padding: 8px 20px;
+  font-family: 'Bungee', sans-serif; /* Coherencia con tu tipografía */
+  font-size: 1.2rem;
+  color: #FFD700; /* Texto dorado */
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 
+    0 2px 10px rgba(0,0,0,0.3),
+    inset 0 1px 3px rgba(255,255,255,0.2);
+  margin-right: 10px;
+  backdrop-filter: blur(5px); /* Efecto de vidrio esmerilado */
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.puntos:hover {
+  transform: scale(1.05);
+  box-shadow: 
+    0 4px 15px rgba(0,0,0,0.4),
+    inset 0 1px 5px rgba(255,255,255,0.3);
+}
+
+.puntos::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to bottom right,
+    rgba(255, 215, 0, 0.1) 0%,
+    rgba(255, 215, 0, 0) 50%,
+    rgba(255, 215, 0, 0.1) 100%
+  );
+  transform: rotate(30deg);
+  animation: shine 3s infinite linear;
+}
+
+@keyframes shine {
+  0% { transform: translateX(-100%) rotate(30deg); }
+  100% { transform: translateX(100%) rotate(30deg); }
+}
+
+.puntos .etiqueta {
+  font-weight: bold;
+  font-size: 1rem;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  z-index: 1;
+}
+
+.puntos .valor {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  z-index: 1;
+  min-width: 30px;
+  text-align: center;
+}
+
+.puntos::after {
+  content: '★';
+  font-size: 1.4rem;
+  z-index: 1;
+  margin-right: 5px;
+}
+
+
+/* Estadísticas Finales */
+.estadisticas-container {
+  background: rgba(30, 30, 30, 0.9);
+  border: 2px solid #FFD700;
+  border-radius: 15px;
+  padding: 2rem;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+  text-align: center;
+}
+
+.estadisticas-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.estadistica {
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.estadistica:hover {
+  transform: translateY(-5px);
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.estadistica-icono {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.estadistica-valor {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #FFD700;
+  margin-bottom: 0.3rem;
+}
+
+.estadistica-titulo {
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+.boton-reiniciar {
+  font-size: clamp(1.2rem, 2vw, 1.8rem);
+  padding: 0.8rem 2rem;
+  background-color: black;
+  color: white;
+  border: 2px solid #ccc;
+  border-radius: 0;
+  letter-spacing: 3px;
+  text-align: center;
+  text-transform: uppercase;
+  opacity: 50%;
+  transition: opacity 0.3s;
+  font-family: "Bungee", sans-serif;
+  margin: 0;
+}
+
+.boton-reiniciar:hover {
+  opacity: 90%;
+}
+
+/* Responsive */
+@media screen and (max-width: 600px) {
+  .estadisticas-grid {
+      grid-template-columns: 1fr;
+  }
+  
+  .estadistica {
+      padding: 0.8rem;
+  }
+  
+  .estadistica-icono {
+      font-size: 2rem;
+  }
+  
+  .estadistica-valor {
+      font-size: 1.5rem;
+  }
+}
+
 
 
 /*ADAPTACIONES*/

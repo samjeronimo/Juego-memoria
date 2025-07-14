@@ -34,6 +34,8 @@ function cargarDOM() {
 }
 
 let vidasRestantes = 5;  // Vidas globales, inicializadas a 5
+let puntos = 0;
+
 
 function actualizarVidas(header) {
     // Primero elimina vidas actuales
@@ -80,6 +82,18 @@ function iniciarJuego(DOM) {
     cronometro.textContent = "Tiempo: 00";
     header.appendChild(cronometro);
 
+    let puntosTexto = document.createElement('div');
+    puntosTexto.className = "puntos";
+    puntosTexto.innerHTML = `
+        <div class="marcador">
+            <span class="etiqueta">Puntos</span>
+            <span class="valor">${puntos}</span>
+        </div>
+    `;
+    header.appendChild(puntosTexto);
+
+
+
     let tablero = document.createElement('div');
     tablero.className = "tablero";
     DOM.appendChild(tablero);
@@ -100,6 +114,15 @@ function iniciarJuego(DOM) {
     generarNivel(nivelActual, tablero, header, botonNivel);
 
     // NO asignar onclick aquí, se asignará cuando se complete el nivel
+}
+
+
+function actualizarPuntos(header) {
+    const puntosBox = header.querySelector('.puntos .valor');
+    if (puntosBox) {
+        puntosBox.textContent = puntos;
+    }
+
 }
 
 
@@ -124,7 +147,7 @@ function crearCarta(valor) {
     img.alt = "carta";
     img.className = "imagen-carta";
 
-back.appendChild(img);
+    back.appendChild(img);
 
 
     carta.appendChild(front);
@@ -221,6 +244,22 @@ function generarNivel(nivel, tablero, header, botonNivel) {
 
                     // ¿Se terminaron las cartas?
                     if (paresEncontrados === cantidadCartas / 2) {
+
+                        // Asignar puntos según el nivel (puedes ajustar los valores si deseas)
+                        let puntosGanados = 10 + (nivel - 1) * 2;  // 10, 12, 14, 16, 18
+                        puntos += puntosGanados;
+
+                        // Penalización por vidas perdidas (por cada vida perdida, -1 punto)
+                        let penalizacion = 5 - vidasRestantes;
+                        puntos -= penalizacion;
+
+                        // Asegurarse de que no bajen de cero
+                        if (puntos < 0) puntos = 0;
+
+                        // Actualizar visualmente los puntos
+                        actualizarPuntos(header);
+
+
                         const boton = document.querySelector('.boton-nivel');
                         clearInterval(temporizador); // Detener el cronómetro al ganar
                         if (nivel < 5) {
@@ -269,14 +308,21 @@ function iniciarCronometro(tiempoInicial, callbackFin) {
     let tiempoRestante = tiempoInicial;
     const cronometro = document.querySelector('.cronometro');
     cronometro.textContent = `Tiempo: ${tiempoRestante}s`;
+    cronometro.classList.remove('critico'); // Resetear clase
 
     temporizador = setInterval(() => {
         tiempoRestante--;
+        
+        // Añadir clase critico cuando quedan 5 segundos o menos
+        if(tiempoRestante <= 5) {
+            cronometro.classList.add('critico');
+        }
+        
         cronometro.textContent = `Tiempo: ${tiempoRestante}s`;
 
         if (tiempoRestante <= 0) {
             clearInterval(temporizador);
-            callbackFin(); // Ejecuta lo que pasará cuando se acabe el tiempo
+            callbackFin();
         }
     }, 1000);
 }
@@ -284,18 +330,75 @@ function iniciarCronometro(tiempoInicial, callbackFin) {
 
 
 function mostrarCartelFinal() {
+    // Calcular estadísticas
+    const vidasPerdidas = 5 - vidasRestantes;
+    const nivelMaximo = 5;
+    const eficiencia = Math.round((puntos / (100 + nivelMaximo * 2)) * 100);
+
+    // Crear elementos
     const cartel = document.createElement('div');
+    const container = document.createElement('div');
+    const titulo = document.createElement('h1');
+    const mensaje = document.createElement('p');
+    const grid = document.createElement('div');
+    const btnReiniciar = document.createElement('button');
+
+    // Configurar clases (estilos en CSS)
     cartel.className = "cartel-final";
-    cartel.innerHTML = `
-        <h1>🎉 ¡Felicidades! 🎉</h1>
-        <p>Completaste todos los niveles del juego 😺🧠</p>
-    `;
+    container.className = "estadisticas-container";
+    grid.className = "estadisticas-grid";
+    btnReiniciar.className = "boton-reiniciar";
 
-    // Cuando hagan clic en el cartel, se quita
-    cartel.addEventListener('click', () => {
+    // Configurar contenido
+    titulo.textContent = "🎉 ¡Felicidades! 🎉";
+    mensaje.textContent = "¡Completaste todos los niveles del juego!";
+    btnReiniciar.textContent = "Jugar de nuevo";
+
+    // Crear estadísticas
+    const crearEstadistica = (icono, valor, tituloText) => {
+        const stat = document.createElement('div');
+        const icon = document.createElement('span');
+        const value = document.createElement('span');
+        const title = document.createElement('span');
+
+        stat.className = "estadistica";
+        icon.className = "estadistica-icono";
+        value.className = "estadistica-valor";
+        title.className = "estadistica-titulo";
+
+        icon.textContent = icono;
+        value.textContent = valor;
+        title.textContent = tituloText;
+
+        stat.appendChild(icon);
+        stat.appendChild(value);
+        stat.appendChild(title);
+
+        return stat;
+    };
+
+    // Añadir estadísticas al grid
+    grid.appendChild(crearEstadistica("🏆", puntos, "Puntos totales"));
+    grid.appendChild(crearEstadistica("💔", vidasPerdidas, "Vidas perdidas"));
+    grid.appendChild(crearEstadistica("📈", `${eficiencia}%`, "Eficiencia"));
+    grid.appendChild(crearEstadistica("🚀", `${nivelMaximo}/5`, "Nivel alcanzado"));
+
+    // Configurar botón
+    btnReiniciar.onclick = () => {
         cartel.remove();
-    });
+        vidasRestantes = 5;
+        puntos = 0;
+        const DOM = document.querySelector('#root');
+        DOM.innerHTML = "";
+        cargarDOM();
+    };
 
+    // Ensamblar todo
+    container.appendChild(titulo);
+    container.appendChild(mensaje);
+    container.appendChild(grid);
+    container.appendChild(btnReiniciar);
+    cartel.appendChild(container);
     document.body.appendChild(cartel);
 }
 
@@ -333,6 +436,7 @@ function mostrarCartelGameOver() {
     document.querySelector('#btn-reiniciar').onclick = () => {
         cartel.remove();
         vidasRestantes = 5;
+        puntos = 0;
         const DOM = document.querySelector('#root');
         DOM.innerHTML = "";
         cargarDOM();
